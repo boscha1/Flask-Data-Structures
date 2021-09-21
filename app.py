@@ -42,7 +42,7 @@ class BlogPost(db.Model):
     title = db.Column(db.String(50))
     body = db.Column(db.String(200))
     date = db.Column(db.Date)
-    user_id = db.Column(db.Integer, db.ForeignKey("user_id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
 if __name__ == '__main__':
     app.run()
