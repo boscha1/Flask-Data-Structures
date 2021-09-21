@@ -31,6 +31,7 @@ now = datetime.now()
 class User(db.Model):
     __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
     email = db.Column(db.String(50))
     address = db.Column(db.String(200))
     phone = db.Column(db.String(50))
@@ -48,7 +49,16 @@ class BlogPost(db.Model):
 
 @app.route("/user", methods=["POST"])
 def create_user():
-    pass
+    data = request.get_json()
+    new_user = User(
+        name=data["name"],
+        email=data["email"],
+        address=data["address"],
+        phone=data["phone"]
+    )
+    db.session.add(new_user)
+    db.commit()
+    return jsonify({"message": "User created"}), 200
 
 
 @app.route("/user/descending_id", methods=["GET"])
