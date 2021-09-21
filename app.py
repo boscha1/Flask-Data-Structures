@@ -1,12 +1,48 @@
-from flask import Flask
+from sqlite3 import Connection as SQLite3Connection
+from datetime import datetime
+
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import event
+from sqlalchemy.engine import Engine
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///sqlitedb.file"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = 0
 
-@app.route('/')
-def hello_world():  # put application's code here
-    return 'Hello World!'
 
+# configure sqlite3 to enfore foreign key constraints
+# without this config, sqlite would allow blog posts without valid users
+@event.listens_for(Engine, "connect")
+def _set_sqlite_pragma(dbapi_connection, connection_record):
+    if isinstance(dbapi_connection, SQLite3Connection):
+        cursor = dbapi_connection.cursor()
+        cursor.execute("PRAGMA foreign_keys=ON;")
+        cursor.close()
+
+# get an instance of the SQLAlchemy class for app
+db = SQLAlchemy(app)
+now = datetime.now()
+
+
+# models
+class User(db.Model):
+    __tablename__ = "user"
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(50))
+    address = db.Column(db.String(200))
+    phone = db.Column(db.String(50))
+    posts = db.relationship("BlogPost")
+
+
+class BlogPost(db.Model):
+    __tablename__ = "blog_post"
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(50))
+    body = db.Column(db.String(200))
+    date = db.Column(db.Date)
+    user_id = db.Column(db.Integer, db.ForeignKey("user_id"), nullable=False)
 
 if __name__ == '__main__':
     app.run()
