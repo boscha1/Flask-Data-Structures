@@ -9,6 +9,17 @@ class LinkedList:
         self.head = None
         self.tail = None
 
+    def to_list(self):
+        new_list = []
+        if self.head is None:
+            return new_list
+
+        node = self.head
+        while node:
+            new_list.append(node.current_node)
+            node = node.next_node
+        return new_list
+
     def to_string(self):
         ll_string = ""
         node = self.head
