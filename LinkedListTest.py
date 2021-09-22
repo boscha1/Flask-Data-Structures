@@ -9,12 +9,10 @@ class MyTestCase(unittest.TestCase):
 
     def setUp(self):
         self.linked_list = LinkedList()
+        self.linked_list.insert_head("John")
+        self.linked_list.insert_head("Fred")
+        self.linked_list.insert_head("Tim")
 
-        self.node3 = Node("John", None)
-        self.node2 = Node("Fred", self.node3)
-        self.node1 = Node("Tim", self.node2)
-
-        self.linked_list.head = self.node1
 
     def test_to_string(self):
         """
