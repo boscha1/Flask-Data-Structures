@@ -6,21 +6,29 @@ class MyTestCase(unittest.TestCase):
     """
         Test cases for LinkedList class
     """
-    def test_print_linked_list(self):
+    def setUp(self):
+        self.linked_list = LinkedList()
+
+        self.node3 = Node("John", None)
+        self.node2 = Node("Fred", self.node3)
+        self.node1 = Node("Tim", self.node2)
+
+        self.linked_list.head = self.node1
+
+    def test_to_string(self):
         """
-            Given an input file containing integer values, and the integer value 8,
-            test that the my_search method correctly returns the index 6 verifying
-            that 8 is in the list.
+            Test the to_string() method to see if it displays the list correctly
         """
-        linked_list = LinkedList()
+        self.assertEqual(self.linked_list.to_string(), " Tim -> Fred -> John -> None")
 
-        node3 = Node("data3", None)
-        node2 = Node("data2", node3)
-        node1 = Node("data1", node2)
 
-        linked_list.head = node1
-
-        self.assertEqual(linked_list.to_string(), " data1 -> data2 -> data3 -> None")
+    def test_insert_head(self):
+        """
+            Test the insert_head() method to see if a new node is inserted at
+            the beginning of the LinkedList
+        """
+        self.linked_list.insert_head("Joe")
+        self.assertEqual(self.linked_list.to_string(), " Joe -> Tim -> Fred -> John -> None")
 
 
 if __name__ == '__main__':
