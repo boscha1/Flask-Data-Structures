@@ -19,3 +19,7 @@ class LinkedList:
             node = node.next_node
         ll_string += " None"
         return ll_string
+
+    def insert_head(self, data):
+        new_node = Node(data, self.head)
+        self.head = new_node
