@@ -1,10 +1,10 @@
 from sqlite3 import Connection as SQLite3Connection
 from datetime import datetime
-
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import event
 from sqlalchemy.engine import Engine
 from flask import Flask, request, jsonify
+import LinkedList
 
 app = Flask(__name__)
 
@@ -63,7 +63,21 @@ def create_user():
 
 @app.route("/user/descending_id", methods=["GET"])
 def get_all_users_descending():
-    pass
+    users = User.query.all()
+    all_users = LinkedList.LinkedList()
+
+    for user in users:
+        all_users.insert_head(
+            {
+                "id": user.id,
+                "name": user.name,
+                "email": user.email,
+                "address": user.address,
+                "phone": user.phone
+            }
+        )
+
+    return jsonify(all_users.to_list()), 200
 
 
 @app.route("/user/ascending", methods=["GET"])
