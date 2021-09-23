@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import event
 from sqlalchemy.engine import Engine
 from flask import Flask, request, jsonify
-import LinkedList
+from DataStructures.LinkedList import LinkedList
 
 app = Flask(__name__)
 
