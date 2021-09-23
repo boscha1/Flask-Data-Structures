@@ -47,3 +47,12 @@ class LinkedList:
 
         self.tail.next_node = Node(data, None)
         self.tail = self.tail.next_node
+
+    def get_user_by_id(self, user_id):
+        head_pointer = self.head
+
+        while head_pointer:
+            if head_pointer.current_node["id"] is int(user_id):
+                return head_pointer.current_node
+            head_pointer = head_pointer.next_node
+        return None
