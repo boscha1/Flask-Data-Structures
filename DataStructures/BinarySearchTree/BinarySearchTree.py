@@ -30,21 +30,20 @@ class BinarySearchTree:
             self._insert_recursive(data, self.root)
 
     def _search_recursive(self, blog_post_id, node):
-        if node.left is None and node.right is None:
-            return False
-
         if blog_post_id == node.data["id"]:
             return node.data
 
-        if blog_post_id < node.data["id"]:
+        if blog_post_id < node.data["id"] and node.left is not None:
             if blog_post_id == node.left.data["id"]:
                 return node.left.data
             return self._search_recursive(blog_post_id, node.left)
 
-        if blog_post_id > node.data["id"]:
+        if blog_post_id > node.data["id"] and node.right is not None:
             if blog_post_id == node.right.data["id"]:
                 return node.right.data
             return self._search_recursive(blog_post_id, node.right)
+
+        return False
 
     def search(self, blog_post_id):
         blog_post_id = int(blog_post_id)
