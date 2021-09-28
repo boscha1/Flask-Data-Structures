@@ -10,6 +10,7 @@ from DataStructures.BinarySearchTree import BinarySearchTree
 from DataStructures.LinkedList import LinkedList
 from DataStructures.HashTable import HashTable
 from DataStructures.Queue import Queue
+from DataStructures.Stack import Stack
 
 app = Flask(__name__)
 
@@ -179,7 +180,7 @@ def get_all_blog_posts(blog_post_id):
     if not post:
         return jsonify({"message": "Post not found"})
 
-    return jsonify(post)
+    return jsonify(post), 200
 
 
 @app.route("/blog_post/numeric_body", methods=["GET"])
@@ -212,9 +213,21 @@ def get_numeric_post_bodies():
     return jsonify(return_list), 200
 
 
-@app.route("/blog_post/<blog_post_id>", methods=["DELETE"])
-def delete_blog_post(blog_post_id):
-    pass
+@app.route("/blog_post/delete_last_10", methods=["DELETE"])
+def delete_blog_post():
+    posts = BlogPost.query.all()
+
+    s = Stack.Stack()
+
+    for post in posts:
+        s.push(post)
+
+    for _ in range(10):
+        post_delete = s.pop()
+        db.session.delete(post_delete.data)
+        db.session.commit()
+
+    return jsonify({"message": "success"}), 200
 
 
 if __name__ == '__main__':
