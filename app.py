@@ -9,6 +9,7 @@ from flask import Flask, request, jsonify
 from DataStructures.BinarySearchTree import BinarySearchTree
 from DataStructures.LinkedList import LinkedList
 from DataStructures.HashTable import HashTable
+from DataStructures.Queue import Queue
 
 app = Flask(__name__)
 
@@ -181,9 +182,34 @@ def get_all_blog_posts(blog_post_id):
     return jsonify(post)
 
 
-@app.route("/blog_post/<blog_post_id>", methods=["GET"])
-def get_one_blog_post(blog_post_id):
-    pass
+@app.route("/blog_post/numeric_body", methods=["GET"])
+def get_numeric_post_bodies():
+    posts = BlogPost.query.all()
+
+    q = Queue.Queue()
+
+    for post in posts:
+        q.enqueue(post)
+
+    return_list = []
+
+    for _ in range(len(posts)):
+        post = q.dequeue()
+        numeric_body = 0
+        for char in post.data.body:
+            numeric_body += ord(char)
+
+        post.data.body = numeric_body
+        return_list.append(
+            {
+                "id": post.data.id,
+                "title": post.data.title,
+                "body": post.data.body,
+                "user_id": post.data.user_id
+            }
+        )
+
+    return jsonify(return_list), 200
 
 
 @app.route("/blog_post/<blog_post_id>", methods=["DELETE"])
