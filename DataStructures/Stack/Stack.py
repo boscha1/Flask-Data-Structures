@@ -3,11 +3,12 @@ class Node:
         self.data = data
         self.next_node = next_node
 
+
 class Stack:
-    def __int__(self):
+    def __init__(self):
         self.top = None
 
-    def peak(self):
+    def peek(self):
         return self.top
 
     def push(self, data):
