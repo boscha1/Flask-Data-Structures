@@ -9,7 +9,7 @@ class Stack:
         self.top = None
 
     def peek(self):
-        return self.top
+        return self.top.data
 
     def push(self, data):
         next_node = self.top
